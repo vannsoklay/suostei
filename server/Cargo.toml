@@ -6,3 +6,21 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+actix-web = "*"
+actix-cors = "*"
+actix-files = "*"
+actix-session = { version="*", features=["redis-rs-session", "redis-rs-tls-session"] }  
+actix-web-flash-messages = "0.4"
+mongodb = "*"
+chrono = { version = "0.4", features = ["serde"] }
+reqwest = { version = "0.11", features = ["json"] }
+serde = { version = "1.0", features = ["derive"] }  
+serde_json = "1.0"
+futures = "*"
+envy = "0.4"
+dotenv = "*"
+rand = "*"
+base64 = "*"
+time = "*"
+jsonwebtoken = "*"
+env_logger = "*"
