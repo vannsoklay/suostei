@@ -5,7 +5,6 @@ import { CharacterLimitPlugin } from "@lexical/react/LexicalCharacterLimitPlugin
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import LexicalClickableLinkPlugin from "@lexical/react/LexicalClickableLinkPlugin";
-import { CollaborationPlugin } from "@lexical/react/LexicalCollaborationPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import { HashtagPlugin } from "@lexical/react/LexicalHashtagPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
@@ -18,9 +17,7 @@ import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import useLexicalEditable from "@lexical/react/useLexicalEditable";
 import * as React from "react";
 import { useEffect, useState } from "react";
-// import { CAN_USE_DOM } from "shared/canUseDOM";
 
-// import {createWebsocketProvider} from './collaboration';
 import { useSettings } from "@/editor/context/SettingsContext";
 import { useSharedHistoryContext } from "@/editor/context/SharedHistoryContext";
 import ActionsPlugin from "@/editor/plugins/ActionsPlugin";
@@ -30,7 +27,6 @@ import AutoLinkPlugin from "@/editor/plugins/AutoLinkPlugin";
 import CodeActionMenuPlugin from "@/editor/plugins/CodeActionMenuPlugin";
 import CodeHighlightPlugin from "@/editor/plugins/CodeHighlightPlugin";
 import CollapsiblePlugin from "@/editor/plugins/CollapsiblePlugin";
-import CommentPlugin from "@/editor/plugins/CommentPlugin";
 import ComponentPickerPlugin from "@/editor/plugins/ComponentPickerPlugin";
 import ContextMenuPlugin from "@/editor/plugins/ContextMenuPlugin";
 import DragDropPaste from "@/editor/plugins/DragDropPastePlugin";
@@ -65,10 +61,6 @@ import YouTubePlugin from "@/editor/plugins/YouTubePlugin";
 import ContentEditable from "@/editor/ui/ContentEditable";
 import Placeholder from "@/editor/ui/Placeholder";
 
-const skipCollaborationInit =
-  // @ts-expect-error
-  window.parent != null && window.parent.frames.right === window;
-
 export const CAN_USE_DOM: boolean =
   typeof window !== "undefined" &&
   typeof window.document !== "undefined" &&
@@ -95,8 +87,8 @@ export default function Editor(): JSX.Element {
   const text = isCollab
     ? "Enter some collaborative rich text..."
     : isRichText
-    ? "Enter some rich text..."
-    : "Enter some plain text...";
+      ? "Enter some rich text..."
+      : "Enter some plain text...";
   const placeholder = <Placeholder>{text}</Placeholder>;
   const [floatingAnchorElem, setFloatingAnchorElem] =
     useState<HTMLDivElement | null>(null);
@@ -149,20 +141,10 @@ export default function Editor(): JSX.Element {
         <KeywordsPlugin />
         <SpeechToTextPlugin />
         <AutoLinkPlugin />
-        {/* <CommentPlugin
-          providerFactory={isCollab ? createWebsocketProvider : undefined}
-        /> */}
+
         {isRichText ? (
           <>
-            {/* {isCollab ? (
-              <CollaborationPlugin
-                id="main"
-                providerFactory={createWebsocketProvider}
-                shouldBootstrap={!skipCollaborationInit}
-              />
-            ) : (
-              <HistoryPlugin externalHistoryState={historyState} />
-            )} */}
+            <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={
                 <div className="editor-scroller">
