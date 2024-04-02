@@ -39,8 +39,6 @@ export default function TopBar() {
   const { user, auth, loading } = useAuth();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  console.log("user", user);
-
   return (
     <>
       <Navbar maxWidth="2xl">
@@ -142,13 +140,13 @@ export default function TopBar() {
                   <DropdownMenu aria-label="User Actions" variant="flat">
                     <DropdownItem key="profile" className="h-14 gap-2">
                       <p className="font-bold">Signed in as</p>
-                      <p className="font-bold">@tonyreichert</p>
+                      <p className="font-bold">{user.name}</p>
                     </DropdownItem>
 
                     <DropdownSection showDivider>
                       <DropdownItem key="dashboard">Dashboard</DropdownItem>
                     </DropdownSection>
-                    <DropdownSection aria-label="Help & Feedback">
+                    <DropdownSection aria-label="Help & Feedback" className="mb-0">
                       <DropdownItem key="help_and_feedback">
                         Help & Feedback
                       </DropdownItem>
