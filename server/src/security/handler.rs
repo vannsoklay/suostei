@@ -1,4 +1,4 @@
-use crate::contexts::token::AuthenticationGuard;
+use crate::context::token::AuthenticationGuard;
 use crate::models::user::{LoginUserSchema, QueryCode, RegisterUserSchema, User};
 use crate::security::response::{FilteredUser, UserData, UserResponse};
 use crate::security::{
@@ -12,9 +12,9 @@ use actix_web::{
 use chrono::{prelude::*, Duration};
 use jsonwebtoken::{encode, EncodingKey, Header};
 use mongodb::bson::{doc, oid::ObjectId, DateTime};
-use reqwest::header::LOCATION;
+use actix_web::http::header::LOCATION;
 
-use crate::contexts::{AppState, TokenClaims};
+use crate::context::{AppState, TokenClaims};
 
 #[post("/auth/register")]
 async fn register_user_handler(
@@ -24,7 +24,7 @@ async fn register_user_handler(
     let USER = data.db.collection::<User>("users");
 
     let user = USER
-        .find_one(doc! { "email": body.email.to_lowercase() }, None)
+        .find_one(doc! { "email": body.email.to_lowercase() })
         .await
         .expect("Can't find");
 
@@ -49,7 +49,7 @@ async fn register_user_handler(
         updated_at: Some(datetime),
     };
 
-    let write_user = USER.insert_one(user, None).await;
+    let write_user = USER.insert_one(user).await;
 
     if write_user.is_err() {
         return HttpResponse::Conflict()
@@ -70,7 +70,7 @@ async fn login_user_handler(
     let USER = data.db.collection::<User>("users");
 
     let user = USER
-        .find_one(doc! { "email": body.email.to_lowercase() }, None)
+        .find_one(doc! { "email": body.email.to_lowercase() })
         .await
         .expect("Can't find");
 
@@ -151,7 +151,7 @@ async fn google_oauth_handler(
     let google_user = google_user.unwrap();
 
     let user = USER
-        .find_one(doc! { "third_party_id": google_user.id.clone() as i64 }, None)
+        .find_one(doc! { "third_party_id": google_user.id.clone() as i64 })
         .await
         .expect("Can't find");
 
@@ -181,7 +181,7 @@ async fn google_oauth_handler(
             updated_at: Some(datetime),
         };
 
-        let _ = USER.insert_one(user_data, None).await;
+        let _ = USER.insert_one(user_data).await;
     }
 
     let jwt_secret = data.env.jwt_secret.to_owned();
@@ -250,7 +250,7 @@ async fn github_oauth_handler(
     let third_party_id = github_user.id;
 
     let user = USER
-        .find_one(doc! { "third_party_id": third_party_id.clone() as i64 }, None)
+        .find_one(doc! { "third_party_id": third_party_id.clone() as i64 })
         .await
         .expect("Can't find");
 
@@ -282,7 +282,7 @@ async fn github_oauth_handler(
             updated_at: Some(datetime),
         };
 
-        let _ = USER.insert_one(user_data, None).await;
+        let _ = USER.insert_one(user_data).await;
     }
 
     let jwt_secret = data.env.jwt_secret.to_owned();
@@ -336,7 +336,7 @@ async fn get_me_handler(
     let USER = data.db.collection::<User>("users");
 
     let user = USER
-        .find_one(doc! { "_id": auth_guard.user_id.to_owned() }, None)
+        .find_one(doc! { "_id": auth_guard.user_id.to_owned() })
         .await
         .expect("Can't find");
 

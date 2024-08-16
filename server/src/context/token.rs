@@ -11,7 +11,7 @@ use mongodb::bson::doc;
 use serde_json::json;
 
 use crate::{
-    contexts::{AppState, TokenClaims},
+    context::{AppState, TokenClaims},
     models::user::User,
 };
 
@@ -56,10 +56,11 @@ impl FromRequest for AuthenticationGuard {
                 )))
             }
         };
+
         let user_existed = async move {
             let user_db = data.db.collection::<User>("users");
 
-            let user = user_db.find_one(doc! { "_id": user_id }, None).await;
+            let user = user_db.find_one(doc! { "_id": user_id }).await;
 
             if user.is_err() {
                 return Err(ErrorUnauthorized(format!("Internal Server Error")));

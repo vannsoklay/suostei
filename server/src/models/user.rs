@@ -36,3 +36,13 @@ pub struct LoginUserSchema {
     pub email: String,
     pub password: String,
 }
+
+#[async_graphql::Object]
+impl User {
+    async fn id(&self) -> Option<String> {
+        self._id.to_owned()
+    }
+    async fn name(&self) -> &str {
+        &self.name
+    }
+}

@@ -11,13 +11,15 @@ actix-cors = "*"
 actix-files = "*"
 actix-session = { version="*", features=["redis-rs-session", "redis-rs-tls-session"] }  
 actix-web-flash-messages = "0.4"
+async-graphql-actix-web = "*"
+async-graphql = "*"
 mongodb = "*"
-chrono = { version = "0.4", features = ["serde"] }
-reqwest = { version = "0.11", features = ["json"] }
+chrono = { version  = "0.4", features = ["serde"] }
+reqwest = { version = "*", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }  
 serde_json = "1.0"
 futures = "*"
-envy = "0.4"
+envy = "*"
 dotenv = "*"
 rand = "*"
 base64 = "*"

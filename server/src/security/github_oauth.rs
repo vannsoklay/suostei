@@ -3,7 +3,7 @@ use reqwest::Client;
 use serde::Deserialize;
 use std::error::Error;
 
-use crate::contexts::AppState;
+use crate::context::AppState;
 
 #[derive(Deserialize)]
 pub struct GitHubOauthToken {

@@ -12,6 +12,12 @@ pub struct TokenClaims {
     pub exp: usize,
 }
 
+#[derive(Debug, Clone)]
+pub struct ClaimState {
+    pub user_id: String,
+    pub role: Option<String>,
+}
+
 pub struct AppState {
     pub db: Database,
     pub env: config::Config,
